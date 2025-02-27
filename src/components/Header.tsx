@@ -68,11 +68,18 @@ export default function Header() {
               <select
                 id="race"
                 name="race"
-                className="p-3 w-full rounded-lg focus:outline-none bg-white"
+                className="p-3 w-full rounded-lg focus:outline-none bg-white text-gray-800 shadow-md appearance-none relative
+             after:content-['▼'] after:absolute after:right-4 after:top-1/2 after:-translate-y-1/2 after:text-gray-500"
               >
-                <option value="">-- Seleccione --</option>
+                <option value="" className="text-gray-500">
+                  -- Seleccione --
+                </option>
                 {uniqueRaces.map((race) => (
-                  <option key={race} value={race}>
+                  <option
+                    key={race}
+                    value={race}
+                    className="max-h-52 overflow-hidden"
+                  >
                     {race}
                   </option>
                 ))}
