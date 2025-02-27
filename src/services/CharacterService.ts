@@ -1,15 +1,26 @@
-import axios from "axios"
-import { RacesAPIResponseSchema } from "../utils/characters-schema"
-
+import axios from "axios";
+import { ItemsAPIResponseSchema, RacesAPIResponseSchema } from "../utils/characters-schema";
 
 export async function getRaces() {
-    const url = "https://dragonball-api.com/api/characters?limit=58"
+  const url = `${import.meta.env.VITE_BD_API}/characters?limit=58`;
 
-    const {data} = await axios(url)
+  const { data } = await axios(url);
 
-    const result = RacesAPIResponseSchema.safeParse(data)
+  const result = RacesAPIResponseSchema.safeParse(data);
 
-    if(result.success){
-        return result.data
-    }
+  if (result.success) {
+    return result.data;
+  }
+}
+
+export async function getCharacters() {
+    const url = `${import.meta.env.VITE_BD_API}/characters?limit=58`;
+
+    const { data } = await axios(url);
+
+    const result = ItemsAPIResponseSchema.safeParse(data);
+
+  if (result.success) {
+    return result.data;
+  }
 }

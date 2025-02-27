@@ -7,13 +7,17 @@ export default function Header() {
 
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
-  const fetchraces = useAppStore((state) => state.fetchraces)
+  const fetchraces = useAppStore((state) => state.fetchraces);
 
   const { items } = useAppStore((state) => state.races);
 
   useEffect(() => {
-    fetchraces()
-  },[fetchraces])
+    fetchraces();
+  }, [fetchraces]);
+
+  const uniqueRaces = Array.from(
+    new Set(items.map((item) => item.race))
+  ).filter(Boolean);
 
   return (
     <header
@@ -67,9 +71,9 @@ export default function Header() {
                 className="p-3 w-full rounded-lg focus:outline-none bg-white"
               >
                 <option value="">-- Seleccione --</option>
-                {items.map((item) => (
-                  <option key={item.race} value={item.race}>
-                    {item.race}
+                {uniqueRaces.map((race) => (
+                  <option key={race} value={race}>
+                    {race}
                   </option>
                 ))}
               </select>

@@ -11,6 +11,7 @@ export const RacesAPIResponseSchema = z.object({
 export const ItemAPIResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
+  race: z.string(),
   image: z.string(),
   affiliation: z.string(),
 });
