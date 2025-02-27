@@ -19,3 +19,7 @@ export const ItemAPIResponseSchema = z.object({
 export const ItemsAPIResponseSchema = z.object({
     items: z.array(ItemAPIResponseSchema)
 })
+
+export const SearchFilterSchema = z.object({
+    race: z.string()
+})

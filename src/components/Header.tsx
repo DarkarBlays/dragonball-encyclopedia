@@ -1,13 +1,19 @@
-import { useEffect, useMemo } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppStore } from "../stores/useAppStore";
 
 export default function Header() {
+  const [searchFilters, setSearchFilters] = useState({
+    race: "",
+  });
+
   const { pathname } = useLocation();
 
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
   const fetchraces = useAppStore((state) => state.fetchraces);
+
+  const searchRaces = useAppStore((state) => state.searchRaces);
 
   const { items } = useAppStore((state) => state.races);
 
@@ -18,6 +24,24 @@ export default function Header() {
   const uniqueRaces = Array.from(
     new Set(items.map((item) => item.race))
   ).filter(Boolean);
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSearchFilters({
+      ...searchFilters,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (Object.values(searchRaces).includes("")) {
+      console.log("La raza es obligatoria");
+      return;
+    }
+
+    searchRaces(searchFilters);
+  };
 
   return (
     <header
@@ -57,7 +81,10 @@ export default function Header() {
           </nav>
         </div>
         {isHome && (
-          <form className="md:w-1/2 2xl:w-1/3 bg-orange-400 shadow-2xl my-20 p-8 rounded-lg space-y-6">
+          <form
+            className="md:w-1/2 2xl:w-1/3 bg-orange-400 shadow-2xl my-20 p-8 rounded-lg space-y-6"
+            onSubmit={handleSubmit}
+          >
             <div className="space-y-4">
               <label
                 htmlFor="race"
@@ -70,6 +97,8 @@ export default function Header() {
                 name="race"
                 className="p-3 w-full rounded-lg focus:outline-none bg-white text-gray-800 shadow-md appearance-none relative
              after:content-['▼'] after:absolute after:right-4 after:top-1/2 after:-translate-y-1/2 after:text-gray-500"
+                onChange={handleChange}
+                value={searchFilters.race}
               >
                 <option value="" className="text-gray-500">
                   -- Seleccione --
