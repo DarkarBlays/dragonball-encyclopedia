@@ -15,7 +15,6 @@ export default function IndexPage() {
 
   const hasCharacters = useMemo(() => itemsfilter.length, [itemsfilter]);
 
-  console.log(hasCharacters)
   return (
     <div className="max-w-7xl mx-auto px-4">
       <h1 className="text-5xl sm:text-6xl font-extrabold text-center py-6 leading-tight">

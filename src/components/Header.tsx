@@ -35,11 +35,11 @@ export default function Header() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (Object.values(searchRaces).includes("")) {
+    if (Object.values(searchFilters).includes('')) {
       console.log("La raza es obligatoria");
       return;
     }
-
+  
     searchRaces(searchFilters);
   };
 
