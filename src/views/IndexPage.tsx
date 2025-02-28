@@ -3,9 +3,9 @@ import { useAppStore } from "../stores/useAppStore";
 import CharacterCard from "../components/CharacterCard";
 
 export default function IndexPage() {
-  const { items } = useAppStore((state) => state.characters);
-
-  const { items: itemsfilter } = useAppStore((state) => state.charactersfilter);
+  const items = useAppStore((state) => state.characters.items);
+  
+  const itemsfilter = useAppStore((state) => state.charactersfilter);
 
   const searchCharacters = useAppStore((state) => state.searchCharacters);
 
@@ -13,7 +13,7 @@ export default function IndexPage() {
     searchCharacters();
   }, [searchCharacters]);
 
-  const hasCharacters = useMemo(() => itemsfilter.length, [itemsfilter]);
+  const hasCharacters = useMemo(() => itemsfilter.length > 0, [itemsfilter]);
 
   return (
     <div className="max-w-7xl mx-auto px-4">

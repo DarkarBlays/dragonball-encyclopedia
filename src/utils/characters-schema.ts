@@ -17,8 +17,18 @@ export const ItemAPIResponseSchema = z.object({
 });
 
 export const ItemsAPIResponseSchema = z.object({
-    items: z.array(ItemAPIResponseSchema)
+  items: z.array(ItemAPIResponseSchema)
 })
+
+export const ItemsFilterAPIResponseSchema = z.array(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+    race: z.string(),
+    image: z.string(), 
+    affiliation: z.string(),
+  })
+)
 
 export const SearchFilterSchema = z.object({
     race: z.string()
