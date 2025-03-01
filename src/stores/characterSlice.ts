@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
-import { Items, ItemsFilter, Races, SearchFilter } from "../types";
+import { Character, Items, ItemsFilter, Races, SearchFilter } from "../types";
 import {
+  getCharacterById,
   getCharacters,
   getRaces,
   getRacesFilter,
@@ -10,9 +11,13 @@ export type CharactersSliceType = {
   races: Races;
   characters: Items;
   charactersfilter: ItemsFilter;
+  selectedCharacter: Character;
+  modal: boolean;
   fetchraces: () => Promise<void>;
   searchCharacters: () => Promise<void>;
   searchRaces: (SearchFilter: SearchFilter) => Promise<void>;
+  selectCharacter: (id: Character["id"]) => Promise<void>;
+  closeModal: () => void;
 };
 
 export const createCharacterSlice: StateCreator<CharactersSliceType> = (
@@ -31,6 +36,8 @@ export const createCharacterSlice: StateCreator<CharactersSliceType> = (
       races,
     });
   },
+  selectedCharacter: {} as Character,
+  modal: false,
   searchCharacters: async () => {
     const characters = await getCharacters();
     set({ characters });
@@ -41,4 +48,17 @@ export const createCharacterSlice: StateCreator<CharactersSliceType> = (
       charactersfilter,
     });
   },
+  selectCharacter: async (id) => {
+    const selectedCharacter = await getCharacterById(id);
+    set({
+      selectedCharacter,
+      modal: true,
+    });
+  },
+  closeModal: () =>{
+    set({
+      modal:false,
+      selectedCharacter: {} as Character
+    })
+  }
 });
