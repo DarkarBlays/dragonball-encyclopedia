@@ -63,3 +63,12 @@ export const CharacterAPIResponseSchema = z.object({
     )
   ),
 });
+
+export const TransfortmationsAPIResponseSchema = z.nullable(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+    image: z.string(),
+    ki: z.string(),
+  })
+);

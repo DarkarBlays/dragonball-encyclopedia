@@ -57,16 +57,17 @@ export async function getCharacterById(id: Character["id"]) {
 
     const { data } = await axios(url);
 
-    const result = CharacterAPIResponseSchema.safeParse(data.items);
+    const result = CharacterAPIResponseSchema.safeParse(data);
+
 
     if (result.success) {
       return result.data;
     } else {
       console.error("Error al validar la respuesta del API", result.error);
-      return [];
+      const validatedData = CharacterAPIResponseSchema.parse(data);
+      return validatedData;
     }
   } catch (error) {
     console.error("Error al obtener personajes filtrados:", error);
-    return [];
   }
 }

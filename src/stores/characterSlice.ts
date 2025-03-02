@@ -6,6 +6,7 @@ import {
   getRaces,
   getRacesFilter,
 } from "../services/CharacterService";
+import { FavoritesSliceType } from "./favoritesSlice";
 
 export type CharactersSliceType = {
   races: Races;
@@ -20,9 +21,12 @@ export type CharactersSliceType = {
   closeModal: () => void;
 };
 
-export const createCharacterSlice: StateCreator<CharactersSliceType> = (
-  set
-) => ({
+export const createCharacterSlice: StateCreator<
+  CharactersSliceType & FavoritesSliceType,
+  [],
+  [],
+  CharactersSliceType
+> = (set) => ({
   races: {
     items: [],
   },
@@ -55,10 +59,10 @@ export const createCharacterSlice: StateCreator<CharactersSliceType> = (
       modal: true,
     });
   },
-  closeModal: () =>{
+  closeModal: () => {
     set({
-      modal:false,
-      selectedCharacter: {} as Character
-    })
-  }
+      modal: false,
+      selectedCharacter: {} as Character,
+    });
+  },
 });

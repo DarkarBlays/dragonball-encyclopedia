@@ -1,9 +1,10 @@
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./layouts/layout";
-import FavoritesPage from "./views/FavoritesPage";
+import Layout from "./layouts/Layout";
 
 const IndexPage = lazy(() => import("./views/IndexPage"))
+
+const FavoritesPage = lazy(() => import("./views/FavoritesPage"));
 
 export default function AppRouter() {
 
