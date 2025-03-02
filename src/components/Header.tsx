@@ -1,20 +1,20 @@
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppStore } from "../stores/useAppStore";
+import Spiner from "./Spiner";
 
 export default function Header() {
   const [searchFilters, setSearchFilters] = useState({
     race: "",
   });
 
-  const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const { pathname } = useLocation();
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
   const fetchraces = useAppStore((state) => state.fetchraces);
-
   const searchRaces = useAppStore((state) => state.searchRaces);
-
   const { items } = useAppStore((state) => state.races);
 
   useEffect(() => {
@@ -32,15 +32,26 @@ export default function Header() {
     });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (Object.values(searchFilters).includes('')) {
+    if (Object.values(searchFilters).includes("")) {
       console.log("La raza es obligatoria");
       return;
     }
-  
-    searchRaces(searchFilters);
+
+    setIsLoading(true); // Activar el spinner
+
+    // Esperar la carga real de los datos
+    const fetchData = searchRaces(searchFilters);
+
+    // Esperar 3 segundos antes de quitar el spinner
+    await Promise.all([
+      fetchData,
+      new Promise((resolve) => setTimeout(resolve, 1000)), // Espera mínima de 3s
+    ]);
+
+    setIsLoading(false); // Desactivar el spinner después de 3s
   };
 
   return (
@@ -95,8 +106,7 @@ export default function Header() {
               <select
                 id="race"
                 name="race"
-                className="p-3 w-full rounded-lg focus:outline-none bg-white text-gray-800 shadow-md appearance-none relative
-             after:content-['▼'] after:absolute after:right-4 after:top-1/2 after:-translate-y-1/2 after:text-gray-500"
+                className="p-3 w-full rounded-lg focus:outline-none bg-white text-gray-800 shadow-md appearance-none relative"
                 onChange={handleChange}
                 value={searchFilters.race}
               >
@@ -114,11 +124,13 @@ export default function Header() {
                 ))}
               </select>
             </div>
-            <input
+            <button
               type="submit"
-              value="Filtrar Personajes"
-              className="cursor-pointer bg-orange-700 hover:bg-orange-800 text-white font-extrabold w-full p-2 rounded-lg uppercase"
-            />
+              className="cursor-pointer bg-orange-700 hover:bg-orange-800 text-white font-extrabold w-full p-2 rounded-lg uppercase flex justify-center items-center"
+              disabled={isLoading} // Desactiva el botón mientras carga
+            >
+              {isLoading ? <Spiner /> : "Filtrar Personajes"}
+            </button>
           </form>
         )}
       </div>
